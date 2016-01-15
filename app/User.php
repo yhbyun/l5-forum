@@ -31,5 +31,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['github_id', 'password', 'remember_token'];
+
+    protected $guarded = ['id', 'notifications', 'is_banned'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($topic) {
+            SiteStatus::newUser();
+        });
+    }
 }
