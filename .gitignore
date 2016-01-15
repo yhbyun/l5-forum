@@ -1,0 +1,7 @@
+/vendor
+/node_modules
+/dotphp
+.env
+.DS_Store
+_ide_helper.php
+.idea
