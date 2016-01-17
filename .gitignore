@@ -1,6 +1,7 @@
 /vendor
 /node_modules
 /dotphp
+/public/build
 composer.lock
 .env
 .DS_Store
