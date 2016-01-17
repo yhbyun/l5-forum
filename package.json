@@ -3,5 +3,21 @@
   "devDependencies": {
     "gulp": "^3.8.8",
     "laravel-elixir": "^1.0.0"
+  },
+  "dependencies": {
+    "InlineAttachment": "git+https://github.com/Rovak/InlineAttachment.git",
+    "autosize": "^3.0.14",
+    "bootstrap-sass": "^3.3.6",
+    "emojify.js": "^1.1.0",
+    "font-awesome": "^4.5.0",
+    "jquery": "^1.12.0",
+    "jquery-pjax": "git+https://github.com/defunkt/jquery-pjax.git",
+    "jquery-textcomplete": "^0.8.1",
+    "localforage": "^1.3.1",
+    "marked": "^0.3.5",
+    "moment": "^2.11.1",
+    "nprogress": "^0.2.0",
+    "prismjs": "^1.3.0",
+    "scrollup": "git+https://github.com/markgoodyear/scrollup.git"
   }
 }

@@ -2,17 +2,20 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Pagination\Paginator;
+use Laracasts\Presenter\PresentableTrait;
 
 class Topic extends Model
 {
+    use PresentableTrait;
+    protected $presenter = \App\Presenters\TopicPresenter::class;
+
     use SoftDeletes;
-
-    // manually maintian
-    public $timestamps = false;
-
     protected $dates = ['deleted_at'];
+
+    public $timestamps = false;
 
     protected $fillable = [
         'title',
@@ -36,42 +39,42 @@ class Topic extends Model
 
     public function votes()
     {
-        return $this->morphMany('Vote', 'votable');
+        return $this->morphMany('App\Vote', 'votable');
     }
 
     public function favoritedBy()
     {
-        return $this->belongsToMany('User', 'favorites');
+        return $this->belongsToMany('App\User', 'favorites');
     }
 
     public function attentedBy()
     {
-        return $this->belongsToMany('User', 'attentions');
+        return $this->belongsToMany('App\User', 'attentions');
     }
 
     public function node()
     {
-        return $this->belongsTo('Node');
+        return $this->belongsTo('App\Node');
     }
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\User');
     }
 
     public function lastReplyUser()
     {
-        return $this->belongsTo('User', 'last_reply_user_id');
+        return $this->belongsTo('App\User', 'last_reply_user_id');
     }
 
     public function replies()
     {
-        return $this->hasMany('Reply');
+        return $this->hasMany('App\Reply');
     }
 
     public function appends()
     {
-        return $this->hasMany('Append');
+        return $this->hasMany('App\Append');
     }
 
     public function getWikiList()
@@ -89,10 +92,15 @@ class Topic extends Model
 
     public function getRepliesWithLimit($limit = 30)
     {
-        if (is_null(\Input::get(\Paginator::getPageName()))) {
-            $latest_page = ceil($this->reply_count / $limit);
-            \Paginator::setCurrentPage($latest_page ?: 1);
-        }
+        Paginator::currentPageResolver(function ($pageName) use ($limit) {
+            $page = app('request')->input($pageName);
+
+            if (filter_var($page, FILTER_VALIDATE_INT) !== false && (int) $page >= 1) {
+                return $page;
+            }
+
+            return ceil($this->reply_count / $limit);
+        });
 
         return $this->replies()
                     ->orderBy('created_at', 'asc')

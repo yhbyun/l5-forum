@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Reply extends Model
 {
 
@@ -25,22 +23,22 @@ class Reply extends Model
 
     public function votes()
     {
-        return $this->morphMany('Vote', 'votable');
+        return $this->morphMany('App\Vote', 'votable');
     }
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\User');
     }
 
     public function topic()
     {
-        return $this->belongsTo('Topic');
+        return $this->belongsTo('App\Topic');
     }
 
     public function scopeWhose($query, $user_id)
     {
-        return $query->where('user_id', '=', $user_id)->with('topic');
+        return $query->where('user_id', $user_id)->with('topic');
     }
 
     public function scopeRecent($query)

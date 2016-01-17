@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
 class OAuthSession extends Model
 {
     protected $table = 'oauth_sessions';

@@ -1,16 +1,15 @@
 <?php
 
-use Laracasts\Presenter\PresentableTrait;
-use Phphub\Core\Jpush;
+namespace App;
 
-class Notification extends \Eloquent
+use Carbon\Carbon;
+use Laracasts\Presenter\PresentableTrait;
+
+class Notification extends Model
 {
     use PresentableTrait;
-    public $presenter = 'Phphub\Presenters\NotificationPresenter';
+    public $presenter = \App\Presenters\NotificationPresenter::class;
 
-    private static $jpush = null;
-
-    // Don't forget to fill this array
     protected $fillable = [
             'from_user_id',
             'user_id',
@@ -22,31 +21,32 @@ class Notification extends \Eloquent
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\User');
     }
 
     public function topic()
     {
-        return $this->belongsTo('Topic');
+        return $this->belongsTo('App\Topic');
     }
 
     public function fromUser()
     {
-        return $this->belongsTo('User', 'from_user_id');
+        return $this->belongsTo('App\User', 'from_user_id');
     }
 
     /**
      * Create a notification
-     * @param  [type] $type     currently have 'at', 'new_reply', 'attention', 'append'
-     * @param  User   $fromUser come from who
-     * @param  array   $users   to who, array of users
-     * @param  Topic  $topic    cuurent context
-     * @param  Reply  $reply    the content
-     * @return [type]           none
+     *
+     * @param string $type 'at', 'new_reply', 'attention', 'append'
+     * @param User $fromUser come from who
+     * @param array $users to who, array of users
+     * @param Topic $topic current context
+     * @param Reply|null $reply the content
+     * @param null $content
      */
     public static function batchNotify($type, User $fromUser, $users, Topic $topic, Reply $reply = null, $content = null)
     {
-        $nowTimestamp = Carbon::now()->toDateTimeString();
+        $nowTimestamp = Carbon::now();
         $data = [];
 
         foreach ($users as $toUser) {
@@ -92,8 +92,7 @@ class Notification extends \Eloquent
             return;
         }
 
-        $nowTimestamp = Carbon::now()->toDateTimeString();
-
+        $nowTimestamp = Carbon::now();
 
         $data = [
             'from_user_id' => $fromUser->id,
@@ -114,64 +113,7 @@ class Notification extends \Eloquent
 
     public static function pushNotification($data)
     {
-        $notification = Notification::query()
-                ->with('fromUser', 'topic')
-                ->where($data)
-                ->first();
-
-        if (!$notification) {
-            return;
-        }
-
-        $from_user_name = $notification->fromUser->name;
-        $topic_title    = $notification->topic->title;
-
-        $msg = $from_user_name
-                . ' • ' . $notification->present()->lableUp()
-                . ' • ' . $topic_title;
-
-        $push_data = array_only($data, [
-            'topic_id',
-            'from_user_id',
-            'type',
-        ]);
-
-        if ($data['reply_id'] !== 0) {
-            $push_data['reply_id']    = $data['reply_id'];
-            // $push_data['replies_url'] = route('replies.web_view', $data['reply_id']);
-        }
-
-        self::jpush($notification->user_id, $msg, $push_data);
-    }
-
-    /**
-     * 推送消息.
-     *
-     * @param $user_ids
-     * @param $msg
-     * @param $extras
-     */
-    protected static function jpush($user_ids, $msg, $extras = null)
-    {
-        if (!self::$jpush) {
-            self::$jpush = new Jpush();
-        }
-
-        $user_ids = (array) $user_ids;
-        $user_ids = array_map(function ($user_id) {
-            return 'userid_'.$user_id;
-        }, $user_ids);
-
-        try {
-            self::$jpush
-                ->platform('all')
-                ->message($msg)
-                ->toAlias($user_ids)
-                ->extras($extras)
-                ->send();
-        } catch (Exception $e) {
-            // Ignore
-        }
+        // TODO: implement
     }
 
     public static function isNotified($from_user_id, $user_id, $topic_id, $type)

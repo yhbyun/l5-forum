@@ -2,20 +2,18 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Attention extends Model
 {
     protected $fillable = [];
 
     public function post()
     {
-        return $this->belongsTo('Post');
+        return $this->belongsTo('App\Post');
     }
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\User');
     }
 
     public static function isUserAttentedTopic(User $user, Topic $topic)

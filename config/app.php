@@ -137,12 +137,22 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        Collective\Html\HtmlServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\LocalServiceProvider::class,
+        App\Providers\MarkdownServiceProvider::class,
+
+        Laracasts\Flash\FlashServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
+        Mews\Purifier\PurifierServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
     ],
 
@@ -191,6 +201,10 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
+        'Form'      => Collective\Html\FormFacade::class,
+        'Html'      => Collective\Html\HtmlFacade::class,
+        'Flash'     => Laracasts\Flash\Flash::class,
 
     ],
 

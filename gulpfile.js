@@ -11,6 +11,19 @@ var elixir = require('laravel-elixir');
  |
  */
 
+var paths = {
+    'bootstrap': 'node_modules/bootstrap-sass/assets/',
+    'font-awesome': 'node_modules/font-awesome/',
+    'emojify': 'node_modules/emojify.js/'
+};
+
 elixir(function(mix) {
-    mix.less('app.less');
+    mix.sass('app.scss')
+        .browserify('app.js')
+        .version(['css/app.css', 'js/bundle.js'])
+        .copy(paths.bootstrap + 'fonts', 'public/build/fonts')
+        .copy(paths['font-awesome'] + 'fonts', 'public/build/fonts')
+        .copy(paths['emojify'] + 'dist/images/basic', 'public/build/images/emoji')
+        .copy('resources/assets/images', 'public/build/images');
 });
+

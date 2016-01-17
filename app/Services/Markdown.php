@@ -1,4 +1,4 @@
-<?php namespace App\Services\Markdown;
+<?php namespace App\Services;
 
 use League\HTMLToMarkdown\HtmlConverter;
 use Parsedown;

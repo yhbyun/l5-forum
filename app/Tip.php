@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class Tip extends Model
 {
@@ -17,6 +17,6 @@ class Tip extends Model
             return Tip::all();
         });
 
-        return $tips->random();
+        return $tips->count() > 0 ? $tips->random() : null;
     }
 }
