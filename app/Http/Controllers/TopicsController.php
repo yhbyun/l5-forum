@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Append;
+use App\Events\TopicWasViewed;
 use App\Http\Requests\CreateTopicRequest;
 use App\Link;
 use App\Listeners\CreatorListener;
@@ -52,7 +53,7 @@ class TopicsController extends Controller implements CreatorListener
         $node = $topic->node;
         $nodeTopics = $topic->getSameNodeTopics();
 
-        $topic->increment('view_count', 1);
+        event(new TopicWasViewed($topic));
 
         return view('topics.show', compact('topic', 'replies', 'nodeTopics', 'node'));
     }
