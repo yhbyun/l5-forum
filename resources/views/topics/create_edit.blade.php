@@ -72,7 +72,7 @@
 
                 <div class="panel panel-default corner-radius help-box">
                     <div class="panel-heading text-center">
-                        <h3 class="panel-title">{{ lang('Current Node') }} : {{{ $node->name }}}</h3>
+                        <h3 class="panel-title">{!! lang('Current Node') !!} : {{ $node->name }}</h3>
                     </div>
                     <div class="panel-body">
                         {{ $node->description }}

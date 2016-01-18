@@ -6,9 +6,9 @@ class Favorite extends Model
 {
     protected $fillable = [];
 
-    public function post()
+    public function topic()
     {
-        return $this->belongsTo('App\Post');
+        return $this->belongsTo('App\Topic');
     }
 
     public function user()

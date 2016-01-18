@@ -10,7 +10,7 @@
 
         <div class="panel-body text-center">
             <div class="btn-group">
-                <a href="{!! isset($node) ? route('topics.create', ['node_id' => $node->id]) : route('topics.create') !!}" class="btn btn-success btn-lg">
+                <a href="{!! route('topics.create', isset($node) ? ['node_id' => $node->id] : []) !!}" class="btn btn-success btn-lg">
                     <i class="glyphicon glyphicon-pencil"> </i> {{ lang('New Topic') }}
                 </a>
             </div>

@@ -26,7 +26,7 @@
             <span> •  </span>
             <abbr class="timeago" title="{!! $reply->created_at !!}">{!! $reply->created_at !!}</abbr>
             <span> •  </span>
-            <a name="reply{!! $topic->present()->replyFloorFromIndex($index) !!}" class="anchor" href="#reply{!! $topic->present()->replyFloorFromIndex($index) !!}" aria-hidden="true">#{!! $topic->present()->replyFloorFromIndex($index) !!}</a>
+            <a name="reply{!! $reply->id !!}" class="anchor" href="#reply{!! $reply->id !!}" aria-hidden="true">#{!! $topic->present()->replyFloorFromIndex($index) !!}</a>
 
             <span class="operate pull-right">
                 <a data-method="post" id="reply-up-vote-{!! $reply->id !!}" href="javascript:void(0);" data-url="{!! route('replies.vote', $reply->id) !!}" title="{!! lang('Vote Up') !!}">
@@ -35,7 +35,7 @@
                 <span> •  </span>
 
                 @if (auth()->check() && (auth()->user()->can("manage_topics") || auth()->id() == $reply->user_id) )
-                    <a id="reply-delete-{!! $reply->id !!}" data-method="delete"  href="javascript:void(0);" data-url="{!! route('replies.destroy', [$reply->id]) !!}" title="{!! lang('Delete') !!}">
+                     <a id="reply-delete-{{ $reply->id }}" data-method="delete"  href="javascript:void(0);" data-url="{!! route('replies.destroy', [$reply->id]) !!}" data-confirm="{{ lang('Are you sure to delete?') }}" title="{{ lang('Delete') }}">
                         <i class="fa fa-trash-o"></i>
                     </a>
                     <span> •  </span>
